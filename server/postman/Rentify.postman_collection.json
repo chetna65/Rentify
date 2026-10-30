@@ -1,0 +1,555 @@
+{
+  "info": {
+    "_postman_id": "c1f7b8a9-4b6e-4e32-9c9e-8a2e5d9f3b11",
+    "name": "Rentify Trust Architecture API",
+    "description": "Production-grade, zero-trust REST API collection for Rentify. Features cookie-based database sessions, verified document audit trails, partner field inspections, and strict database-enforced integrity transitions.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "sampleListingId",
+      "value": "11111111-1111-4111-8111-111111111101",
+      "type": "string"
+    },
+    {
+      "key": "samplePartnerId",
+      "value": "00000000-0000-4000-8000-000000000004",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Authentication",
+      "item": [
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 98222 33410\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/send-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "send-otp"]
+            },
+            "description": "Dispatches a secure 6-digit OTP to the registered phone number. In development, DEV_OTP defaults to 123456."
+          }
+        },
+        {
+          "name": "Verify OTP (Customer Login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 98222 33410\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "verify-otp"]
+            },
+            "description": "Authenticates customer (Priya Sharma). Sets an httpOnly `rentify_session` cookie valid across subsequent requests."
+          }
+        },
+        {
+          "name": "Verify OTP (Vendor Login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 98222 33411\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "verify-otp"]
+            },
+            "description": "Authenticates vendor (Rajesh Mehta). Sets session cookie."
+          }
+        },
+        {
+          "name": "Verify OTP (Admin Login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 98222 33413\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "verify-otp"]
+            },
+            "description": "Authenticates platform admin (Kavita Rao, Trust Registrar Lead). Sets session cookie."
+          }
+        },
+        {
+          "name": "Verify OTP (Partner Login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 98222 33414\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "verify-otp"]
+            },
+            "description": "Authenticates certified field partner (Amit Patil). Sets session cookie."
+          }
+        },
+        {
+          "name": "Get Current Session (Me)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            },
+            "description": "Returns the serialized profile of the authenticated user based on the active session cookie."
+          }
+        },
+        {
+          "name": "Logout Session",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "logout"]
+            },
+            "description": "Revokes the active session token in the MySQL `sessions` table and clears the client cookie."
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Public Listings",
+      "item": [
+        {
+          "name": "Search Listings (All Filters)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/listings?city=Pune&propertyTypes=Apartment,Independent House&minRent=10000&maxRent=50000&verifiedOnly=true&sort=recommender&limit=12&offset=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "listings"],
+              "query": [
+                { "key": "city", "value": "Pune" },
+                { "key": "propertyTypes", "value": "Apartment,Independent House" },
+                { "key": "minRent", "value": "10000" },
+                { "key": "maxRent", "value": "50000" },
+                { "key": "verifiedOnly", "value": "true" },
+                { "key": "sort", "value": "recommender" },
+                { "key": "limit", "value": "12" },
+                { "key": "offset", "value": "0" }
+              ]
+            },
+            "description": "Retrieves listings with SQL-Mongo hybrid join and multi-attribute filters."
+          }
+        },
+        {
+          "name": "Get Listing By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/listings/{{sampleListingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "listings", "{{sampleListingId}}"]
+            },
+            "description": "Fetches a full listing view including masked documents, field reports, amenities, and user ratings."
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Customer Workspace",
+      "item": [
+        {
+          "name": "Get Personalized Recommendations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/listings/recommended?minRent=15000&maxRent=40000&localities=Kothrud,Dharampeth",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "listings", "recommended"],
+              "query": [
+                { "key": "minRent", "value": "15000" },
+                { "key": "maxRent", "value": "40000" },
+                { "key": "localities", "value": "Kothrud,Dharampeth" }
+              ]
+            },
+            "description": "Returns top 10 verified properties scored across customer budget (30%), preferred localities (25%), safety score (20%), credibility score (15%), and tenant ratings (10%) with explanatory reasons array."
+          }
+        },
+        {
+          "name": "Get Saved Listings",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/me/saved",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "me", "saved"]
+            },
+            "description": "Returns all listings bookmarked by the authenticated customer."
+          }
+        },
+        {
+          "name": "Save Listing",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/me/saved/{{sampleListingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "me", "saved", "{{sampleListingId}}"]
+            },
+            "description": "Bookmarks a listing for the customer (idempotent)."
+          }
+        },
+        {
+          "name": "Unsave Listing",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/me/saved/{{sampleListingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "me", "saved", "{{sampleListingId}}"]
+            },
+            "description": "Removes a listing from saved list."
+          }
+        },
+        {
+          "name": "Submit Feedback on Verified Listing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Exceptional property! The verification report was 100% accurate regarding floor layout and amenities.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/listings/{{sampleListingId}}/feedback",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "listings", "{{sampleListingId}}", "feedback"]
+            },
+            "description": "Submits a rating (1-5) and comment. Updates rating_avg and rating_count atomically. Unique per (customer, listing)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Vendor Workspace",
+      "item": [
+        {
+          "name": "Submit New Listing (Multipart)",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Luxury 3BHK Penthouse in Kalyani Nagar", "type": "text" },
+                { "key": "city", "value": "Pune", "type": "text" },
+                { "key": "locality", "value": "Kalyani Nagar", "type": "text" },
+                { "key": "propertyType", "value": "Apartment", "type": "text" },
+                { "key": "rent", "value": "45000", "type": "text" },
+                { "key": "deposit", "value": "120000", "type": "text" },
+                { "key": "furnishing", "value": "Semi-Furnished", "type": "text" },
+                { "key": "carpetArea", "value": "1450", "type": "text" },
+                { "key": "floor", "value": "8 of 12", "type": "text" },
+                { "key": "description", "value": "Spacious sunlit home overlooking the park with Italian marble flooring.", "type": "text" },
+                { "key": "amenities", "value": "[\"Covered Parking\", \"Power Backup\", \"Clubhouse\", \"Gated Security\"]", "type": "text" },
+                { "key": "documents", "value": "[{\"docType\":\"Index II Title Deed\",\"docNumber\":\"MH-PUN-2023-998811\"}]", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vendor/listings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vendor", "listings"]
+            },
+            "description": "Submits a new listing with uploaded proof documents and images. Enforces relative storage keys, SHA-256 hash calculation, and initial 'pending' status."
+          }
+        },
+        {
+          "name": "Get Vendor Listings",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/vendor/listings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vendor", "listings"]
+            },
+            "description": "Lists all properties submitted by the logged-in vendor."
+          }
+        },
+        {
+          "name": "Resubmit Flagged Listing",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/vendor/listings/{{sampleListingId}}/resubmit",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vendor", "listings", "{{sampleListingId}}", "resubmit"]
+            },
+            "description": "Transitions a flagged listing back to 'pending', clearing flag category and reason in compliance with MySQL table constraints."
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Admin Registrar",
+      "item": [
+        {
+          "name": "Get Review Queue",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/queue?status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "queue"],
+              "query": [
+                { "key": "status", "value": "pending" }
+              ]
+            },
+            "description": "Retrieves listings pending administrative triage, ordered oldest first."
+          }
+        },
+        {
+          "name": "Get Listing Details & Fraud Signals",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/listings/{{sampleListingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "listings", "{{sampleListingId}}"]
+            },
+            "description": "Retrieves comprehensive listing information and computes real-time rule-based fraud detection signals (rent below median, duplicate document/phone across active listings, file SHA-256 reuse, excessive deposit, manual review advisory)."
+          }
+        },
+        {
+          "name": "Get Listing Documents",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/listings/{{sampleListingId}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "listings", "{{sampleListingId}}", "documents"]
+            },
+            "description": "Retrieves listing documents with verification hashes and secure download paths."
+          }
+        },
+        {
+          "name": "Assign Field Partner",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partnerId\": \"{{samplePartnerId}}\",\n  \"scheduledFor\": \"2026-11-01T10:00:00Z\",\n  \"notes\": \"Verify electrical main distribution panel and structural pillars.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/listings/{{sampleListingId}}/assign",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "listings", "{{sampleListingId}}", "assign"]
+            },
+            "description": "Assigns a verified field partner from the matching city. Moves listing status from 'pending' to 'in-review'."
+          }
+        },
+        {
+          "name": "Admin Decision (Flag Listing)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"flagged\",\n  \"flagCategory\": \"document_mismatch\",\n  \"reason\": \"Index II document owner name does not match government tax receipt.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/listings/{{sampleListingId}}/decision",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "listings", "{{sampleListingId}}", "decision"]
+            },
+            "description": "Rejects or flags a listing. Status becomes 'flagged' with mandatory reason."
+          }
+        },
+        {
+          "name": "Admin Decision (Direct Verify)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"verified\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/listings/{{sampleListingId}}/decision",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "listings", "{{sampleListingId}}", "decision"]
+            },
+            "description": "Grants direct verification seal to trusted fast-track properties."
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Field Partner",
+      "item": [
+        {
+          "name": "Get Assigned Queue",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/partner/assignments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "partner", "assignments"]
+            },
+            "description": "Lists all properties currently assigned to the authenticated field agent for inspection."
+          }
+        },
+        {
+          "name": "Submit Field Audit & Issue Seal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"summary\": \"Physical inspection complete. Room measurements and carpet area confirmed within 1.2% tolerance. Structure and wiring meet safety codes.\",\n  \"safetyScore\": 9.4,\n  \"checklist\": {\n    \"documents_verified\": true,\n    \"owner_identity_confirmed\": true,\n    \"physical_condition_checked\": true,\n    \"fire_safety_compliant\": true,\n    \"possession_verified\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/partner/listings/{{sampleListingId}}/field-report",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "partner", "listings", "{{sampleListingId}}", "field-report"]
+            },
+            "description": "Completes physical audit. Generates verification seal ('RNF-YYYYMMDD-XXXX'), transitions status 'in-review' -> 'verified', and creates immutable audit log entry."
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Rental Assistance & Utilities",
+      "item": [
+        {
+          "name": "Get Calculator Parameters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/assistance/calculator-params",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assistance", "calculator-params"]
+            },
+            "description": "Returns financial rules, credit score slabs, and deposit loan interest rates."
+          }
+        },
+        {
+          "name": "Calculate Rental Assistance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"monthlyIncome\": 85000,\n  \"targetRent\": 25000,\n  \"targetDeposit\": 75000,\n  \"creditScore\": 750,\n  \"tenureMonths\": 12\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/assistance/calculate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "assistance", "calculate"]
+            },
+            "description": "Computes rent-to-income affordability, EMI schedules, and pre-approved deposit financing eligibility."
+          }
+        },
+        {
+          "name": "Get Supported Cities",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/cities",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cities"]
+            },
+            "description": "Returns list of active cities in the platform."
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Returns status of the Express server, MySQL pool, and MongoDB connection."
+          }
+        }
+      ]
+    }
+  ]
+}

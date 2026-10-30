@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F8F9F7;
+    color: #1A2421;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    color: #141E1C;
+    letter-spacing: -0.01em;
+  }
+
+  /* Universal Accessible Keyboard Focus Indicators */
+  :focus-visible {
+    outline: 2px solid #0F4C42 !important;
+    outline-offset: 2px !important;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  /* Document certificate serif face for official titles only */
+  .font-registry {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  /* Compact production table styles */
+  .dense-table th {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+  }
+
+  .dense-table td {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  /* Real production card and surface styling */
+  .surface-card {
+    background: #FFFFFF;
+    border: 1px solid #DDE2DC;
+  }
+
+  .surface-card:hover {
+    border-color: #C3CBC1;
+  }
+
+  /* Subtle border status indicators */
+  .border-status-verified {
+    border-left: 3px solid #0F4C42;
+  }
+
+  .border-status-pending {
+    border-left: 3px solid #C06815;
+  }
+
+  .border-status-flagged {
+    border-left: 3px solid #A62626;
+  }
+}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="7" fill="#0F4C42"/>
+  <!-- Shield Outline -->
+  <path d="M16 4L6 8V15.5C6 21.8 10.3 27.6 16 29C21.7 27.6 26 21.8 26 15.5V8L16 4Z" fill="#1B6A5D" stroke="#DE852C" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- House / Inked Deed Emblem Inside Shield -->
+  <path d="M16 10L10.5 15H13V21H19V15H21.5L16 10Z" fill="#FDF4E7"/>
+  <!-- Verification check in gold -->
+  <circle cx="16" cy="18" r="1.8" fill="#DE852C"/>
+</svg>

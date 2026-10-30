@@ -1,0 +1,22 @@
+{
+  "name": "rentify-database",
+  "private": true,
+  "version": "0.1.0",
+  "description": "MySQL + MongoDB setup for Rentify (schemas, migrations, seed data). No API server.",
+  "type": "module",
+  "engines": { "node": ">=20.6" },
+  "scripts": {
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "db:migrate": "node --env-file=.env scripts/migrate.js",
+    "db:mongo:init": "node --env-file=.env scripts/init-mongo.js",
+    "db:seed": "node --env-file=.env scripts/seed.js",
+    "db:seed:reference": "node --env-file=.env scripts/seed.js --reference-only",
+    "db:verify": "node --env-file=.env scripts/verify.js",
+    "db:setup": "npm run db:migrate && npm run db:mongo:init && npm run db:seed && npm run db:verify"
+  },
+  "dependencies": {
+    "mongodb": "^6.10.0",
+    "mysql2": "^3.11.0"
+  }
+}

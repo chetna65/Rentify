@@ -1,0 +1,15 @@
+# Rentify robots.txt
+# Notice: Excluding demo administrative portals from search indexing.
+
+User-agent: *
+Allow: /
+Allow: /customer
+Allow: /assistance
+Allow: /privacy
+Allow: /terms
+Disallow: /admin
+Disallow: /partner
+Disallow: /vendor
+Disallow: /login
+
+Sitemap: https://rentify-demo.vercel.app/sitemap.xml

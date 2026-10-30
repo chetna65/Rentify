@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <!-- Background with subtle warm paper tone -->
+  <rect width="1200" height="630" fill="#F6F7F4"/>
+  <rect x="24" y="24" width="1152" height="582" rx="16" fill="#FFFFFF" stroke="#DDE2DC" stroke-width="2"/>
+  
+  <!-- Subtle decorative grid or pattern -->
+  <line x1="24" y1="120" x2="1176" y2="120" stroke="#EEF0EB" stroke-width="2"/>
+  
+  <!-- Brand Header Badge -->
+  <g transform="translate(80, 60)">
+    <rect width="48" height="48" rx="10" fill="#0F4C42"/>
+    <path d="M24 10L12 15.5V24C12 31.5 17.1 38.4 24 40C30.9 38.4 36 31.5 36 24V15.5L24 10Z" fill="#1B6A5D" stroke="#DE852C" stroke-width="2"/>
+    <path d="M24 17L17 23H20V31H28V23H31L24 17Z" fill="#FDF4E7"/>
+    <text x="64" y="34" font-family="'Playfair Display', Georgia, serif" font-size="32" font-weight="700" fill="#141E1C">Rentify</text>
+    <rect x="190" y="14" width="160" height="26" rx="4" fill="#E7F2EE" stroke="#0F4C42" stroke-width="1"/>
+    <text x="200" y="31" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#0F4C42" letter-spacing="1.5">DEED-VERIFIED RENTALS</text>
+  </g>
+
+  <!-- Main Hero Tagline -->
+  <text x="80" y="230" font-family="'Playfair Display', Georgia, serif" font-size="52" font-weight="700" fill="#141E1C">
+    Renter-Centric Housing &amp;
+  </text>
+  <text x="80" y="295" font-family="'Playfair Display', Georgia, serif" font-size="52" font-weight="700" fill="#0F4C42">
+    Deed-Verified Assistance Platform
+  </text>
+
+  <!-- Subtitle -->
+  <text x="80" y="360" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" fill="#526461" width="800">
+    Bringing together property discovery, land registry verification (Index II),
+  </text>
+  <text x="80" y="395" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" fill="#526461">
+    Model Tenancy Act deposit compliance, and on-site physical partner audits.
+  </text>
+
+  <!-- 3 Feature Cards -->
+  <g transform="translate(80, 450)">
+    <!-- Card 1 -->
+    <rect x="0" y="0" width="310" height="90" rx="8" fill="#F6F7F4" stroke="#DDE2DC" stroke-width="1.5"/>
+    <text x="20" y="36" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" font-weight="700" fill="#0F4C42">✓ IGR Deed Verification</text>
+    <text x="20" y="64" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#758885">Indexed government land records</text>
+
+    <!-- Card 2 -->
+    <rect x="340" y="0" width="310" height="90" rx="8" fill="#FDF4E7" stroke="#F5D7B0" stroke-width="1.5"/>
+    <text x="360" y="36" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" font-weight="700" fill="#C06815">✓ MTA Deposit Cap Audit</text>
+    <text x="360" y="64" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#874307">Max 2-month legal deposit security</text>
+
+    <!-- Card 3 -->
+    <rect x="680" y="0" width="350" height="90" rx="8" fill="#E7F2EE" stroke="#C1DFD7" stroke-width="1.5"/>
+    <text x="700" y="36" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" font-weight="700" fill="#08332C">✓ On-Site Field Inked Seal</text>
+    <text x="700" y="64" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" fill="#1B6A5D">GPS, physical key &amp; vacancy check</text>
+  </g>
+</svg>
